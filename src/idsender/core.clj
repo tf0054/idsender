@@ -10,14 +10,15 @@
 ; ---
 (def persec 10)
 ; ---
+(def namespace-name (ns-name *ns*))
 
 (def cli-options
   ;definitions of option
   ;long option should have an example in it....
-  [["-t" "--tuple A" "REQUIRED: Target tuple"
+  [["-t" "--tuple A" "Target tuple"
     :id :tuple
     :default "covtype01"]
-   ["-g" "--gserver 192.168.30.10:9191" "The genn.ai address if you want to send data"
+   ["-g" "--gserver 192.168.30.10:9191" "The genn.ai address"
     :id :server
     :default "192.168.30.10:9191"]
    ["-u" "--userid 545562980cf2827387ebbfe6" "User id string"
@@ -32,7 +33,7 @@
 (defn usage [options-summary]
   (->> ["This is my program. There are many like it, but this one is mine."
         ""
-        "Usage: program-name [options] action"
+        (str "Usage: " namespace-name "[options] action")
         ""
         "Options:"
         options-summary
@@ -46,7 +47,6 @@
 
 (def in (chan 1))
 (def slow-chan (throttle-chan in persec :second))
-;(def slow-chan (throttle-chan in 1 :millisecond))
 
 (def not-nil? (complement nil?))
 
